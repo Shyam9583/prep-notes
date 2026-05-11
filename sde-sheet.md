@@ -71,11 +71,11 @@
 ## Greedy Algorithms — 6 Problems
 
 - [x] N Meetings in One Room → Sort by end time (greedy: earliest finish frees the room soonest). Track `last` meeting; include `curr` if `last.end < curr.start`. Count starts at 1. Rule: sort by end time to maximise utilisation with limited resources; sort by start time to calculate resources required (e.g. minimum platforms).
-- [ ] Minimum Number of Platforms Required →
-- [ ] Job Sequencing Problem →
-- [ ] Fractional Knapsack Problem →
-- [ ] Minimum Number of Coins →
-- [ ] Activity Selection →
+- [x] Minimum Number of Platforms Required → Sort arrivals and departures independently. Two pointers: if next arrival ≤ next departure, a new train needs a platform (`curr++`, advance `i`); else a train has left (`curr--`, advance `j`). Track running max. Sort by start time — we're counting concurrent resource usage, not maximising selection.
+- [x] Job Sequencing Problem → Sort by profit descending. Use Union-Find to track the latest free slot ≤ deadline: `find(parent, d)` returns the best available slot; after scheduling, set `parent[slot] = slot - 1` to redirect future queries past it. O(n log n) vs O(n·maxDeadline) for the naive boolean-array approach.
+- [x] Fractional Knapsack Problem → Sort by value/weight ratio descending. Greedily take whole items while capacity allows; for the item that doesn't fit, take the fraction `remaining / wt[i]`. Unlike 0-1 knapsack, fractional allows splitting so greedy is optimal.
+- [x] Minimum Number of Coins → DP: `dp[i]` = min coins for amount `i`. For each amount, try every coin: skip if `i < c` or `dp[i-c] == -1` (unreachable). `dp[0] = 0` is the base; unreachable amounts stay `-1`. Note: this is the LC "Coin Change" variant (unlimited coins, minimise count) — not the greedy "minimum coins with given denominations".
+- [x] Assign Cookies → Sort both greed factors and cookie sizes descending. Two pointers: if largest cookie satisfies greediest child, assign it (`i++, j++, result++`); else the child can't be satisfied by any remaining cookie (`i++`). Greedy works because matching the biggest available cookie to the most demanding satisfiable child wastes nothing.
 
 ---
 

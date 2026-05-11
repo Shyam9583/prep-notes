@@ -13,7 +13,7 @@ Personal revision notes for Striver's SDE Sheet — a curated list of ~160 DSA p
 |-------------------------|------|-------|
 | Arrays & Hashing        | 18   | 24    |
 | Linked List             | 18   | 18    |
-| Greedy Algorithms       | 1    | 6     |
+| Greedy Algorithms       | 6    | 6     |
 | Recursion & Backtracking| 0    | 12    |
 | Binary Search           | 0    | 8     |
 | Stacks & Queues         | 0    | 17    |
