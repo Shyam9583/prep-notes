@@ -1,2 +1,23 @@
 # prep-notes
-Prep notes for interviews
+
+Personal revision notes for Striver's SDE Sheet — a curated list of ~160 DSA problems covering Arrays, Linked Lists, Greedy, Recursion, Binary Search, Stacks & Queues, Trees, Graphs, Dynamic Programming, and Strings/Trie.
+
+## Format
+
+- `- [ ]` = not yet attempted
+- `- [x]` = done — followed by a concise intuition/key insight after `→`
+
+## Progress
+
+| Topic                   | Done | Total |
+|-------------------------|------|-------|
+| Arrays & Hashing        | 18   | 24    |
+| Linked List             | 18   | 18    |
+| Greedy Algorithms       | 1    | 6     |
+| Recursion & Backtracking| 0    | 12    |
+| Binary Search           | 0    | 8     |
+| Stacks & Queues         | 0    | 17    |
+| Binary Trees            | 0    | 48    |
+| Graphs                  | 0    | 18    |
+| Dynamic Programming     | 0    | 15    |
+| Strings & Trie          | 0    | 19    |
