@@ -81,9 +81,9 @@
 
 ## Recursion & Backtracking — 12 Problems
 
-- [ ] Subset Sums →
-- [ ] Subsets II →
-- [ ] Combination Sum I →
+- [x] Subset Sums → Binary choice DFS: at each index, branch into exclude (`dfs(sum, i+1)`) then include (`dfs(sum+arr[i], i+1)`). Base case at `i == len` adds `sum` to result. Yields all 2ⁿ subset sums. Pre-sorting isn't required for correctness but gives a sorted output.
+- [x] Subsets II → Sort first. DFS with include/exclude: always recurse into include; before the exclude branch, skip all consecutive duplicates (`while nums[i] == nums[i+1]: i++`). This ensures a duplicate value is only ever excluded at the first occurrence, preventing duplicate subsets.
+- [x] Combination Sum I → DFS with `remaining`. Include branch reuses the same index `i` (unlimited picks); exclude branch advances `i+1`. Base cases: `remaining == 0` → add clone; `remaining < 0 || i == len` → prune. No sorting required but helps with pruning.
 - [ ] Combination Sum II →
 - [ ] Palindrome Partitioning →
 - [ ] K-th Permutation Sequence →
