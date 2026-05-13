@@ -87,8 +87,8 @@
 - [x] Combination Sum II → Sort first. Same include/exclude DFS as Subsets II: include advances `i+1` (each element used once); before exclude branch, skip consecutive duplicates. Combines the no-reuse rule from Subsets II with the `remaining` pruning from Combination Sum I.
 - [x] Palindrome Partitioning → Precompute `dp[start][end]` bottom-up: `s[start]==s[end] && (size<3 || dp[start+1][end-1])`. Then backtrack: at `start`, try every `end >= start`; if `dp[start][end]`, recurse from `end+1`. Base case `start == len(s)` adds the partition. Precomputing avoids repeated O(n) palindrome checks during backtracking.
 - [x] K-th Permutation Sequence → factorial number system: build `nums=[1..n]`, decrement `k` for 0-based indexing, then repeatedly pick digit at `pos = k / (n-1)!`, remove it from `nums`, and reduce `k %= fact`, `fact /= remaining`.
-- [ ] Print all Permutations of a String/Array →
-- [ ] N-Queens Problem →
+- [x] Print all Permutations of a String/Array → insertion-based: recurse on `nums[i+1:]` first, then for each partial permutation insert `nums[i]` at every position `0..len(partial)`. Alternatively, swap-based in-place: fix index `i`, swap `nums[i]` with each `nums[j]` for `j>=i`, recurse on `i+1`, then swap back.
+- [x] N-Queens Problem → place one queen per row; track `col[j]`, `leftDia[i-j+n-1]`, `rightDia[i+j]` to reject conflicts in O(1). No need for a `row` array — row index is implicit in recursion depth. Closure captures the three bool slices so they don't need to be passed as params.
 - [ ] Sudoku Solver →
 - [ ] M-Coloring Problem →
 - [ ] Rat in a Maze →
