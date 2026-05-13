@@ -89,10 +89,10 @@
 - [x] K-th Permutation Sequence → factorial number system: build `nums=[1..n]`, decrement `k` for 0-based indexing, then repeatedly pick digit at `pos = k / (n-1)!`, remove it from `nums`, and reduce `k %= fact`, `fact /= remaining`.
 - [x] Print all Permutations of a String/Array → insertion-based: recurse on `nums[i+1:]` first, then for each partial permutation insert `nums[i]` at every position `0..len(partial)`. Alternatively, swap-based in-place: fix index `i`, swap `nums[i]` with each `nums[j]` for `j>=i`, recurse on `i+1`, then swap back.
 - [x] N-Queens Problem → place one queen per row; track `col[j]`, `leftDia[i-j+n-1]`, `rightDia[i+j]` to reject conflicts in O(1). No need for a `row` array — row index is implicit in recursion depth. Closure captures the three bool slices so they don't need to be passed as params.
-- [ ] Sudoku Solver →
-- [ ] M-Coloring Problem →
-- [ ] Rat in a Maze →
-- [ ] Word Break (print all ways) →
+- [x] Sudoku Solver → Backtracking: for each empty cell try digits 1–9, validate against row/col/3×3 box before placing, recurse, undo on failure. Box index: `(r/3)*3 + c/3`. Return `true` as soon as the board is fully filled and propagate that `true` up immediately to stop further recursion.
+- [x] M-Coloring Problem → Backtracking on node index 0..v-1: try colors 1..m, check `isSafe` (no neighbor already has that color), recurse on `node+1`, reset to 0 on failure. Use adjacency matrix for O(1) neighbor lookup. Base case `node == v` means all nodes colored successfully.
+- [x] Rat in a Maze → Backtracking: try all 4 directions (D/L/R/U) from each cell; mark `visited[r][c]=true` before recursing, reset to `false` after the loop so other paths can reuse the cell. Base case: `r==n-1 && c==n-1` → append path. Sort directions alphabetically to get lexicographic output.
+- [x] Word Break (print all ways) → Return `[]string` of all sentences from `start` onward; base case `start==n` returns `[""]`. Inner loop `end=start+1..n`: if `s[start:end]` is a word, prepend it to each suffix returned by recursion (`word + " " + suffix`, skip space if suffix is empty). Caller just collects the returned list — no accumulator, no undo.
 
 ---
 
