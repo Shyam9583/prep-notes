@@ -84,9 +84,9 @@
 - [x] Subset Sums → Binary choice DFS: at each index, branch into exclude (`dfs(sum, i+1)`) then include (`dfs(sum+arr[i], i+1)`). Base case at `i == len` adds `sum` to result. Yields all 2ⁿ subset sums. Pre-sorting isn't required for correctness but gives a sorted output.
 - [x] Subsets II → Sort first. DFS with include/exclude: always recurse into include; before the exclude branch, skip all consecutive duplicates (`while nums[i] == nums[i+1]: i++`). This ensures a duplicate value is only ever excluded at the first occurrence, preventing duplicate subsets.
 - [x] Combination Sum I → DFS with `remaining`. Include branch reuses the same index `i` (unlimited picks); exclude branch advances `i+1`. Base cases: `remaining == 0` → add clone; `remaining < 0 || i == len` → prune. No sorting required but helps with pruning.
-- [ ] Combination Sum II →
-- [ ] Palindrome Partitioning →
-- [ ] K-th Permutation Sequence →
+- [x] Combination Sum II → Sort first. Same include/exclude DFS as Subsets II: include advances `i+1` (each element used once); before exclude branch, skip consecutive duplicates. Combines the no-reuse rule from Subsets II with the `remaining` pruning from Combination Sum I.
+- [x] Palindrome Partitioning → Precompute `dp[start][end]` bottom-up: `s[start]==s[end] && (size<3 || dp[start+1][end-1])`. Then backtrack: at `start`, try every `end >= start`; if `dp[start][end]`, recurse from `end+1`. Base case `start == len(s)` adds the partition. Precomputing avoids repeated O(n) palindrome checks during backtracking.
+- [x] K-th Permutation Sequence → factorial number system: build `nums=[1..n]`, decrement `k` for 0-based indexing, then repeatedly pick digit at `pos = k / (n-1)!`, remove it from `nums`, and reduce `k %= fact`, `fact /= remaining`.
 - [ ] Print all Permutations of a String/Array →
 - [ ] N-Queens Problem →
 - [ ] Sudoku Solver →
