@@ -23,3 +23,4 @@ When adding or updating notes:
 - Prefer naming the algorithmic pattern (e.g., "Floyd's cycle detection", "Boyer-Moore voting", "Dutch National Flag") before explaining the mechanics
 - Mark `- [ ]` as `- [x]` only when a note has been written after `→`
 - Preserve the existing section and subsection structure (`### Part I`, `### Part II`, etc.)
+- After marking any problem as done, update the corresponding `Done` count for that topic in `README.md`
