@@ -109,6 +109,17 @@
 
 ---
 
+## Heap — 6 Problems
+
+- [x] Implement Max Heap → Array-backed heap: element `i` has parent `(i-1)/2`, children `2i+1`/`2i+2`. `push`: place at `arr[size++]`, then `heapifyUp` — swap with parent while child > parent. `pop`: swap root with `arr[--size]` (logical removal), then `heapifyDown` — track `largest` among parent and both children, swap and move down. `peek` returns `arr[0]`, or `-1` if empty. Dynamic resize at 75% capacity by 1.5×.
+- [x] Kth Largest Element in an Array → Min-heap of size `k`: invariant is the heap holds the `k` largest elements seen so far. For each `num`, add if `size < k`; else if `num > peek()`, poll then add. Root is the answer.
+- [x] Maximum Sum Combination → Sort both arrays; max-heap seeded with `(a[n-1]+b[n-1], n-1, n-1)`. Each poll yields current best sum; push `(i-1,j)` and `(i,j-1)` if not visited. `HashSet<List<Integer>>` tracks seen index pairs to avoid duplicates.
+- [x] Find Median from Data Stream → Two heaps: `left` max-heap (smaller half), `right` min-heap (larger half). On insert, route to `left` if `num < left.peek()`, else `right`; then rebalance so sizes differ by at most 1. Median is average of both peaks (even) or peak of larger heap (odd).
+- [x] Merge k Sorted Arrays → Min-heap of `(row, col)` comparator on `mat[row][col]`. Seed with first element of each row. Each poll gives the current minimum; push `(i, j+1)` if within bounds.
+- [x] Top K Frequent Elements → Frequency map, then min-heap of size `k` keyed by frequency — same pattern as Kth Largest but comparator is `count.get(a) - count.get(b)`.
+
+---
+
 ## Stacks & Queues — 17 Problems
 
 - [ ] Implement Stack using Queues →
