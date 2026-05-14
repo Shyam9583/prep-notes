@@ -98,13 +98,14 @@
 
 ## Binary Search — 8 Problems
 
-- [ ] N-th Root of an Integer →
-- [ ] Matrix Median →
-- [ ] Search in Rotated Sorted Array →
-- [ ] Median of Two Sorted Arrays →
-- [ ] K-th Element of Two Sorted Arrays →
-- [ ] Allocate Minimum Number of Pages →
-- [ ] Aggressive Cows →
+- [x] N-th Root of an Integer → Binary search on `[1, m]`. `pow(x, n, m)` uses `long` and returns a 3-way signal: `0` = too small, `1` = exact, `2` = too big — short-circuit as soon as product exceeds `m` to avoid overflow. Branch on the signal; return `-1` if no exact integer root.
+- [x] Matrix Median → Binary search on value range `[globalMin, globalMax]`. For each mid, count elements `<= mid` across all rows using per-row `lowerBound` (tracks last index where `nums[m] <= item`, returns `index + 1` as count). If `count <= target` (`target = rows*cols/2`), go right; else go left. Return `l` — when loop ends, `l` is the smallest value where `countBefore > target`, i.e. more than half the matrix is `<= l`, which is exactly the median.
+- [x] Single Element in a Sorted Array (extra) → Invariant: before the single element, pairs sit at even indices; after it, pairs sit at odd indices. At mid: if `m` is even and `nums[m]==nums[m+1]` (or `m` is odd and `nums[m]==nums[m-1]`), the single element is to the right — go right. Otherwise go left. Return `nums[m]` when neither neighbor matches.
+- [x] Search in Rotated Sorted Array → One half is always sorted. Check `nums[l] <= nums[m]`: if true, left half is sorted — target in `[nums[l], nums[m]]` → go left, else go right. Otherwise right half is sorted — target in `[nums[m], nums[r]]` → go right, else go left. Return `m` on hit, `-1` if loop exits.
+- [x] Median of Two Sorted Arrays → Binary search on partition of the smaller array. `cut1 ∈ [0, m]` (counts elements taken, not index — so `l=0, r=m`), `cut2 = half - cut1` where `half = (m+n+1)/2` (`+1` so odd-total left side gets the extra element). Valid partition when `l1 <= r2 && l2 <= r1`; if `l1 > r2` took too many from nums1 so go left, else go right. Sentinels `MIN/MAX_VALUE` handle edge partitions uniformly. Odd total → `max(l1, l2)`; even → `(max(l1,l2) + min(r1,r2)) / 2.0`. O(log(min(m,n))).
+- [x] K-th Element of Two Sorted Arrays → Value-range binary search on `[min(a[0],b[0]), max(a[m-1],b[n-1])]`. Count elements `<= x` across both arrays via `lowerBound` (returns `lastIndex + 1`). If `count < k` go right, else go left. Return `l` — converges to smallest value where `count >= k`, which is the k-th element. Same pattern as Matrix Median.
+- [x] Allocate Minimum Number of Pages → Binary search on answer range `[max(arr), sum(arr)]`. `l = max` because one student must read at least the largest book. For each mid, greedily count students needed (`read + book > allowed` → new student, `read = book`). If `required <= k` go left, else go right. Return `l`. Edge case: `k > arr.length` → return `-1`.
+- [x] Aggressive Cows → Sort stalls. Binary search on answer range `[1, stalls[n-1]-stalls[0]]`. Greedily count cows placeable with min distance `m` (track `lastFit`, place next cow when gap `>= m`). If `count >= k` the distance is achievable — go right to maximise; else go left. Return `r`. **Pattern — maximise minimum:** valid condition pushes `l` right, return `r`. **Pattern — minimise maximum** (e.g. Book Allocation): valid condition pushes `r` left, return `l`.
 
 ---
 
