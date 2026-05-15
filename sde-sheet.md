@@ -120,10 +120,12 @@
 
 ---
 
-## Stacks & Queues — 17 Problems
+## Stacks & Queues — 19 Problems
 
-- [ ] Implement Stack using Queues →
-- [ ] Implement Queue using Stacks →
+- [x] Implement Stack using Arrays → Array-backed stack: `arr[top]` is the current top, `top` starts at -1. `push`: if `top == capacity-1` throw overflow, else `arr[++top] = x`. `pop`: if `top == -1` throw underflow, else return `arr[top--]`. `peek` returns `arr[top]`. All ops O(1).
+- [x] Implement Stack using Queues → Single queue. On `push(x)`: enqueue `x`, then rotate the queue `size-1` times (`add(poll())`) so `x` moves to the front. `pop`/`top` just poll/peek. O(n) push, O(1) pop/top.
+- [x] Implement Queue using Arrays → Circular array queue: `front` and `rear` start at -1. `enqueue`: if full throw overflow, else `rear = (rear+1) % capacity`, `arr[rear] = x` (set `front=0` on first insert). `dequeue`: if empty throw underflow, else save `arr[front]`, advance `front = (front+1) % capacity` (reset both to -1 when last element removed). `peek` returns `arr[front]`. All ops O(1).
+- [x] Implement Queue using Stacks → Two stacks: `inbox`, `outbox`. `push` always goes to `inbox`. `pop`/`peek`: if `outbox` empty, drain all of `inbox` into `outbox` (reversal makes oldest element the new top). Never transfer when `outbox` is non-empty — that would break existing order. Amortized O(1) per op.
 - [ ] Valid Parentheses →
 - [ ] Next Greater Element →
 - [ ] Sort a Stack →
