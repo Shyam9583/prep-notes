@@ -120,22 +120,25 @@
 
 ---
 
-## Stacks & Queues — 19 Problems
+## Stacks & Queues — 17 Problems
 
 - [x] Implement Stack using Arrays → Array-backed stack: `arr[top]` is the current top, `top` starts at -1. `push`: if `top == capacity-1` throw overflow, else `arr[++top] = x`. `pop`: if `top == -1` throw underflow, else return `arr[top--]`. `peek` returns `arr[top]`. All ops O(1).
 - [x] Implement Stack using Queues → Single queue. On `push(x)`: enqueue `x`, then rotate the queue `size-1` times (`add(poll())`) so `x` moves to the front. `pop`/`top` just poll/peek. O(n) push, O(1) pop/top.
 - [x] Implement Queue using Arrays → Circular array queue: `front` and `rear` start at -1. `enqueue`: if full throw overflow, else `rear = (rear+1) % capacity`, `arr[rear] = x` (set `front=0` on first insert). `dequeue`: if empty throw underflow, else save `arr[front]`, advance `front = (front+1) % capacity` (reset both to -1 when last element removed). `peek` returns `arr[front]`. All ops O(1).
 - [x] Implement Queue using Stacks → Two stacks: `inbox`, `outbox`. `push` always goes to `inbox`. `pop`/`peek`: if `outbox` empty, drain all of `inbox` into `outbox` (reversal makes oldest element the new top). Never transfer when `outbox` is non-empty — that would break existing order. Amortized O(1) per op.
-- [ ] Valid Parentheses →
+- [x] Valid Parentheses → push open brackets onto stack; on close bracket, check stack top matches the corresponding open — if not (or stack empty), return false. Return `stack.isEmpty()` at end.
 - [x] Next Greater Element → Monotonic decreasing stack (stores indices). Iterate nums2; while stack top < curr, pop and record curr as NGE in a map. Remaining stack elements get -1. Query map for each nums1 element.
 - [x] Next Smaller Element → Monotonic increasing stack (stores indices). While `arr[stack.top] > curr`, pop and set result at that index to `curr`. Unpopped elements default to -1.
 - [x] Sort a Stack → Recursion: pop `top`, recurse to sort the rest, then `insert(st, top)`. `insert` pops elements larger than `val` onto the call stack, pushes `val`, then restores them — placing `val` in sorted position.
 - [x] LRU Cache → `HashMap<key, Node>` + doubly linked list with sentinel `head`/`tail`. MRU end is `tail.prev`, LRU end is `head.next`. `get`/`put` both call `bringToFront`: remove node, re-add before `tail`. Evict `head.next` when at capacity. Node stores `key` so eviction can clean up the map. Shortcut: `LinkedHashMap(cap, 0.75f, true)` + override `removeEldestEntry`.
 - [x] LFU Cache → Heap approach is O(n) due to arbitrary removal. O(1): `freqMap` of `freq → LinkedHashSet<key>` (LRU order within bucket) + `store` map + explicit `minFreq`. On access, move key to next freq bucket; increment `minFreq` only if old bucket emptied. Reset `minFreq=1` on new insert.
-- [ ] Largest Rectangle in Histogram →
-- [ ] Sliding Window Maximum →
-- [ ] Implement Min Stack →
-- [ ] Rotten Oranges →
+- [x] Largest Rectangle in Histogram → monotonic increasing stack (sentinel `-1` at bottom). When `heights[i]` breaks the order, pop the top as the `height`; the new top is the left boundary, `i` is the right boundary, so `width = i - st.peek() - 1`. Drain remaining stack at end using `n` as right boundary.
+- [x] Sliding Window Maximum → monotonic decreasing deque (stores indices). For each `r`: evict from back while `nums[back] < nums[r]`, then evict front if `front < l`. Front is always the max of the current window.
+- [x] Implement Min Stack → auxiliary `min` stack that only pushes when `val <= min.peek()`; on pop, remove from `min` only if the popped value equals `min.peek()`; both stacks stay in sync because equal values are tracked (handles duplicate minimums).
+- [x] Rotten Oranges → multi-source BFS from all initially-rotten cells simultaneously; track `nFresh` and decrement on each spread; process level by level (snapshot `q.size()` before inner loop) and increment `time` after each full level; return -1 if `nFresh > 0` at the end.
+- [x] Maximum of Minimums for Every Window Size → O(n²): for each window size `k`, run a monotonic-increasing deque over the array to find the min of each window, track the max. O(n) alternative exists via PSE/NSE but is non-obvious.
+- [x] Online Stock Span → monotonic decreasing stack of `[index, price]` pairs with sentinel `[-1, -1]`. Pop while top price `<=` current (those days are "covered"); span = `i - st.peek()[0]`. Same left-boundary trick as Largest Rectangle — the surviving top is the nearest day with a strictly greater price.
+- [x] Celebrity Problem → push all indices onto stack. While size > 1: pop `a` and `b`; if `a knows b` then `a` is eliminated (push back `b`), else `b` is eliminated (push back `a`). Final candidate must be validated: every other person knows them, and they know nobody.
 
 ---
 
