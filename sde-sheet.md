@@ -127,10 +127,11 @@
 - [x] Implement Queue using Arrays → Circular array queue: `front` and `rear` start at -1. `enqueue`: if full throw overflow, else `rear = (rear+1) % capacity`, `arr[rear] = x` (set `front=0` on first insert). `dequeue`: if empty throw underflow, else save `arr[front]`, advance `front = (front+1) % capacity` (reset both to -1 when last element removed). `peek` returns `arr[front]`. All ops O(1).
 - [x] Implement Queue using Stacks → Two stacks: `inbox`, `outbox`. `push` always goes to `inbox`. `pop`/`peek`: if `outbox` empty, drain all of `inbox` into `outbox` (reversal makes oldest element the new top). Never transfer when `outbox` is non-empty — that would break existing order. Amortized O(1) per op.
 - [ ] Valid Parentheses →
-- [ ] Next Greater Element →
-- [ ] Sort a Stack →
-- [ ] LRU Cache →
-- [ ] LFU Cache →
+- [x] Next Greater Element → Monotonic decreasing stack (stores indices). Iterate nums2; while stack top < curr, pop and record curr as NGE in a map. Remaining stack elements get -1. Query map for each nums1 element.
+- [x] Next Smaller Element → Monotonic increasing stack (stores indices). While `arr[stack.top] > curr`, pop and set result at that index to `curr`. Unpopped elements default to -1.
+- [x] Sort a Stack → Recursion: pop `top`, recurse to sort the rest, then `insert(st, top)`. `insert` pops elements larger than `val` onto the call stack, pushes `val`, then restores them — placing `val` in sorted position.
+- [x] LRU Cache → `HashMap<key, Node>` + doubly linked list with sentinel `head`/`tail`. MRU end is `tail.prev`, LRU end is `head.next`. `get`/`put` both call `bringToFront`: remove node, re-add before `tail`. Evict `head.next` when at capacity. Node stores `key` so eviction can clean up the map. Shortcut: `LinkedHashMap(cap, 0.75f, true)` + override `removeEldestEntry`.
+- [x] LFU Cache → Heap approach is O(n) due to arbitrary removal. O(1): `freqMap` of `freq → LinkedHashSet<key>` (LRU order within bucket) + `store` map + explicit `minFreq`. On access, move key to next freq bucket; increment `minFreq` only if old bucket emptied. Reset `minFreq=1` on new insert.
 - [ ] Largest Rectangle in Histogram →
 - [ ] Sliding Window Maximum →
 - [ ] Implement Min Stack →
