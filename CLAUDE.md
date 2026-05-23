@@ -24,3 +24,4 @@ When adding or updating notes:
 - Mark `- [ ]` as `- [x]` only when a note has been written after `→`
 - Preserve the existing section and subsection structure (`### Part I`, `### Part II`, etc.)
 - After marking any problem as done, update the corresponding `Done` count for that topic in `README.md`
+- After adding a note, also add a Java solution file in the corresponding section folder (e.g. `binary-trees/`). File name format: `{number}-{kebab-case-problem-name}.java`. Put the note as a block comment at the top of the file, followed by a working Java solution. Class name should be PascalCase derived from the filename. No package declarations.

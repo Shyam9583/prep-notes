@@ -142,43 +142,34 @@
 
 ---
 
-## Binary Trees — 48 Problems
+## Binary Trees — 26 Problems
 
-### Binary Tree
-
-- [ ] Inorder Traversal (Iterative & Recursive) →
-- [ ] Preorder Traversal (Iterative & Recursive) →
-- [ ] Postorder Traversal (Iterative & Recursive) →
-- [ ] Level Order Traversal →
-- [ ] Left View →
-- [ ] Right View →
-- [ ] Top View →
-- [ ] Bottom View →
-- [ ] Vertical Order Traversal →
-- [ ] Root to Node Path →
-- [ ] Diameter of Binary Tree →
-- [ ] Lowest Common Ancestor (LCA) →
-- [ ] Maximum Path Sum →
-- [ ] Same Tree →
-- [ ] Zig-Zag Traversal →
-- [ ] Boundary Traversal →
-- [ ] Symmetric Binary Tree →
-- [ ] Flatten Binary Tree to Linked List →
-
-### BST
-
-- [ ] Search in BST →
-- [ ] Find Floor in BST →
-- [ ] Find Ceil in BST →
-- [ ] Insert Node in BST →
-- [ ] Delete Node in BST →
-- [ ] K-th Smallest Element →
-- [ ] K-th Largest Element →
-- [ ] BST from Preorder Traversal →
-- [ ] Construct BST from Sorted Array →
-- [ ] Validate BST →
-- [ ] LCA in BST →
-- [ ] Predecessor and Successor in BST →
+- [x] Inorder Traversal → left → root → right; iterative: push curr to stack and go left until null, then pop, collect, move right.
+- [x] Preorder Traversal → root → left → right; iterative: push root, pop and collect, push right then left (so left is processed first).
+- [x] Postorder Traversal → left → right → root; iterative with two stacks: push root to stack1, pop to stack2, push left then right; drain stack2. Single-stack variant: modified preorder (root→right→left) reversed.
+- [x] Morris Inorder Traversal → thread rightmost of left subtree back to curr; `findRightMost` starts at `node.Left`, stops when `curr.Right == nil` or `curr.Right == node`; first visit: create thread and go left; second visit (`rightMost.Right == curr`): disconnect, collect, go right.
+- [x] Morris Preorder Traversal → same threading as Morris inorder but collect on first visit (before going left); on second visit just disconnect and move right without collecting.
+- [x] Right/Left View of BT → BFS level-order; left view = first node of each level, right view = last node. DFS variant: track depth, add to result only when `depth == result.size()` (first visit per level); for right view, recurse right before left.
+- [x] Bottom View of BT → BFS with horizontal distance (col); for each level overwrite `col → node.val` in a TreeMap — last write per col is the deepest node. DFS fails because it doesn't guarantee deepest-wins per column.
+- [x] Top View of BT → BFS with horizontal distance; store `col → node.val` only if col not yet seen (`putIfAbsent`). First BFS visit per col is the topmost node.
+- [x] Pre, Post, Inorder in one traversal → single iterative DFS with a state counter per node: push `(node, 1)`. State 1: collect for preorder, push `(node, 2)`, go left. State 2: collect for inorder, push `(node, 3)`, go right. State 3: collect for postorder, done.
+- [x] Vertical Order Traversal → BFS tracking `(node, row, col)`; store `col → list of (row, val)`; sort each column's list by `(row, val)` — same-column same-row nodes are sorted by value. Use TreeMap on col for left-to-right output.
+- [x] Print root to leaf path in BT → DFS backtracking: add `root.data` to acc, recurse left and right, remove last on return. Add snapshot to result only at leaves (`left == null && right == null`), not at null nodes — otherwise each leaf adds the path twice.
+- [x] Maximum Width of BT → BFS with index tracking: left child of node at index `i` gets `2*i`, right gets `2*i+1`. Width per level = `lastIndex - firstIndex + 1`. Use `long` to avoid overflow on deep trees. DFS variant: track `firstIndex` per depth; `result = max(result, idx - firstIndex[depth] + 1)`; preorder ensures leftmost node is always recorded first.
+- [x] Level Order Traversal → BFS with a queue; snapshot `q.size()` at the start of each level to know how many nodes belong to that level, then poll exactly that many, collecting into a row before adding to result.
+- [x] Maximum Depth of BT → recursive: `1 + max(depth(left), depth(right))`; base case `null → 0`.
+- [x] Diameter of BT → diameter at each node = `leftDepth + rightDepth`; update a global max during the depth DFS so you don't need a second pass.
+- [x] Check for Balanced BT → use `-1` as a sentinel for "unbalanced" in the height DFS; if either child returns `-1` or `|left - right| > 1`, propagate `-1` up immediately.
+- [x] LCA in BT → return `root` when it equals `p` or `q`; if both subtrees return non-nil, current node is the LCA; otherwise bubble up whichever side is non-nil.
+- [x] Check if Two Trees are Identical → `p == q` handles both-nil and same-pointer cases; then check one-nil mismatch, then recurse on both subtrees and compare values.
+- [x] Zigzag / Spiral Level Order → standard BFS but pre-allocate `level[size]` and write at `level[i]` or `level[size-i-1]` based on a `leftToRight` flag; toggle flag each level.
+- [x] Boundary Traversal → three separate passes: left boundary top-down (skip leaves, prefer left child), all leaves left-to-right, right boundary bottom-up (skip leaves, prefer right child); add root separately upfront.
+- [x] Maximum Path Sum → DFS returns best single-branch gain (`node.Val + max(left, right)`); clamp negative children to 0; update global max with `node.Val + left + right` (full path through node) at each node.
+- [x] Construct BT from Preorder and Inorder → preorder[0] is always root; find it in inorder to split left/right subtrees; left subtree has `m = inorderPos` nodes, so left preorder is `preorder[1:m+1]`; recurse.
+- [x] Construct BT from Postorder and Inorder → postorder[last] is root; find it in inorder to get `m = leftSize`; left postorder is `postorder[:m]`, right is `postorder[m:n-1]`; recurse.
+- [x] Symmetric Binary Tree → mirror check: recurse with `(left.Left, right.Right)` and `(left.Right, right.Left)`; same-pointer shortcut handles both-nil case.
+- [x] Flatten Binary Tree to Linked List → post-order DFS returns tail of flattened subtree; wire `leftTail.Right = root.Right`, move left to right, nil the left; return `rightTail ?? leftTail ?? root`.
+- [x] Children Sum Property → DFS returns the subtree sum or `-1` as sentinel; leaf returns its own value; internal node checks `root.data == leftSum + rightSum`, propagates `-1` if violated.
 
 ---
 
@@ -219,14 +210,18 @@
 
 ### Strings
 
-- [ ] Reverse Words in a String →
-- [ ] Longest Palindrome in a String →
-- [ ] Roman to Integer →
-- [ ] Integer to Roman →
-- [ ] Implement ATOI / STRSTR →
-- [ ] Rabin-Karp Algorithm →
-- [ ] Z-Function →
-- [ ] KMP Algorithm →
+- [x] Reverse Words in a String → split on spaces, filter empty tokens (multiple spaces produce empty strings), reverse list, join. No in-place pointer tricks needed with streams.
+- [x] Longest Palindrome in a String → expand-around-center: two passes (odd `l=r=i`, even `l=i, r=i+1`), expand while chars match, extract via `s.substring(l+1, r)` after loop overshoots by one on each side.
+- [x] Roman to Integer → if current value < next value, subtract it; otherwise add it. Always add the last character unconditionally. No special-casing needed for IV/IX/etc.
+- [x] Rabin-Karp → rolling hash: hash the pattern and each window of `txt`. On hash match, verify with string compare to handle collisions. Recompute window hash in O(1): `hash = (hash - s[i]*base^(m-1)) * base + s[i+m]`. Use mod to keep values bounded.
+- [x] Implement ATOI / STRSTR → trim, optional sign, then digit loop. Overflow check before updating: `result > (MAX_VALUE - d) / 10` catches both overflow and the edge case where multiplying first would itself overflow.
+- [x] Longest Common Prefix → init prefix to shortest string, then shrink by one char from the right until all strings match via `startsWith`. Seeding with the shortest avoids index-out-of-bounds on `startsWith`.
+- [x] Repeated String Match → KMP on repeated `a`. Minimum repeats = `ceil(len(b)/len(a))`; try that and +1. KMP's `computeLPS` builds the failure function: `lps[i]` = length of longest proper prefix of `pattern[0..i]` that is also a suffix, used to avoid re-scanning on mismatch.
+- [x] Z-Function → `z[i]` = longest match between `s[i..]` and `s[0..]`. Maintain rightmost window `[l,r]`; seed `z[i] = min(r-i, z[i-l])` when `i < r`, then extend naively. For pattern search: build Z on `pat + "$" + txt`; any `z[i] == len(pat)` is a match. Sentinel `$` prevents the window bridging pat and txt.
+- [x] KMP Algorithm (Search Pattern) → on match `i++,j++`; on mismatch fall back via `j = lps[j-1]`; on full match record `i-n` then fall back again (not `j=0`) to catch overlapping matches.
+- [x] Minimum Insertion Steps to Make a String Palindrome → interval DP: `dp[i][j]` = min insertions to make `s[i..j]` a palindrome. If `s[i]==s[j]`, no insertion needed, recurse on `[i+1,j-1]`; else `1 + min(dp[i+1][j], dp[i][j-1])`. Space-optimised to two 1D arrays iterating `i` from `n-2` down.
+- [x] Count and Say → recurse to get `countAndSay(n-1)`, then run-length encode it: scan left to right, flush `count + char` on change. Always flush the final group after the loop — easy to miss.
+- [x] Compare Version Numbers → two pointers, parse each revision chunk digit-by-digit into an int between dots. After exhausting a string, `i++` still fires harmlessly; missing revisions default to 0 since `x` is initialised to 0 each iteration.
 
 ### Trie
 
