@@ -173,6 +173,19 @@
 
 ---
 
+## Binary Search Trees — 8 Problems
+
+- [x] Floor in a BST → iterative BST traversal: if `curr.data <= k`, it's a floor candidate — save it and go right (look for something closer); else go left. Return `-1` if no candidate found.
+- [x] Ceil in a BST → mirror of floor: if `curr.data >= x`, it's a ceil candidate — save it and go left (look for something closer); else go right. Return `-1` if no candidate found.
+- [x] K-th Smallest Element in BST → inorder traversal (left→root→right) visits nodes in sorted order; increment a counter on each visit and capture `node.Val` when counter hits `k`.
+- [x] K-th Largest Element in BST → reverse inorder (right→root→left) visits nodes in descending order; same counter trick.
+- [x] Two Sum in BST → inorder DFS with a HashSet; before inserting `node.Val`, check if `k - node.Val` already exists. Short-circuit as soon as a pair is found.
+- [x] BST Iterator → lazy iterative inorder using a stack + `curr` pointer. `Next`: push left spine of `curr`, pop top, set `curr = node.Right`, return value. `HasNext`: true if stack or `curr` is non-nil. O(1) amortized, O(h) space.
+- [x] Size of Largest BST in Binary Tree → same bottom-up `(isValid, min, max, size)` pattern as Max Sum BST; return `lSize + rSize + 1` when valid, update global max. Empty node: `(true, MaxInt, MinInt, 0)`.
+- [x] Serialize and Deserialize BT → preorder DFS: serialize nulls as `"N"`, join with `","`. Deserialize with a `ptr` index: if token is `"N"` advance ptr and return nil, else parse value, advance ptr, recurse for left then right.
+
+---
+
 ## Graphs — 18 Problems
 
 - [ ] BFS →
