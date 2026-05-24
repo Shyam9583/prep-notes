@@ -20,7 +20,7 @@ Personal revision notes for Striver's SDE Sheet — a curated list of ~160 DSA p
 | Stacks & Queues          | 17   | 17    |
 | Binary Trees             | 26   | 26    |
 | Binary Search Trees      | 8    | 8     |
-| Graphs                   | 0    | 18    |
+| Graphs                   | 9    | 19    |
 | Dynamic Programming      | 0    | 15    |
 | Strings & Trie           | 12   | 19    |
 | **Total**                | **131** | **176** |

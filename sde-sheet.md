@@ -188,14 +188,15 @@
 
 ## Graphs — 18 Problems
 
-- [ ] BFS →
-- [ ] DFS →
-- [ ] Cycle Detection in Undirected Graph →
-- [ ] Cycle Detection in Directed Graph →
-- [ ] Topological Sort (BFS / Kahn's) →
-- [ ] Topological Sort (DFS) →
-- [ ] Bipartite Graph Check →
-- [ ] Number of Islands →
+- [x] BFS → Iterative with a queue. Mark visited when enqueuing (not dequeuing) to avoid duplicates. Seed the queue with node 0, then for each dequeued node add unvisited neighbors.
+- [x] DFS → Recursive traversal with a `visited[]` boolean array. Mark visited before recursing to handle cycles. Iterate over `adj.get(curr)` (adjacency list) for each neighbor.
+- [x] Cycle Detection in Undirected Graph → BFS: use `{node, parent}` pairs; if a visited neighbor ≠ parent, cycle found. DFS: pass `prev` and `curr`, skip edge back to `prev`; if `curr` already visited, cycle found. Both loop over all nodes for disconnected components.
+- [x] Cycle Detection in Directed Graph → DFS with two sets: `visited` (fully explored) and `path` (current recursion stack). If `curr` is in `path`, back-edge found → cycle. If already in `visited`, skip. Backtrack by removing from `path` after recursing. BFS alternative: Kahn's — if topo order size < V, a cycle exists.
+- [x] Topological Sort (BFS / Kahn's) → Compute indegree for all nodes; seed queue with all zero-indegree nodes. Each dequeue adds node to topo order and decrements neighbors' indegrees — enqueue a neighbor when its indegree hits 0. If result size < V, a cycle exists.
+- [x] Topological Sort (DFS) → DFS: recurse into all unvisited neighbors first, then prepend `curr` to result (`res.add(0, curr)`). Nodes finish in reverse topological order — prepending builds the correct order without a separate reverse step.
+- [x] Bipartite Graph Check → BFS/DFS 2-coloring: assign alternating colors to neighbors; if a neighbor already has the same color, not bipartite. Use a `colors[]` array (default `-1`) and iterate over `graph[curr]` (the adjacency list), not all nodes.
+- [x] Clone Graph → DFS with a `Map<Node, Node>` memo: create the clone before recursing into neighbors so cycles terminate. On revisit, return the already-cloned node from the map.
+- [x] Number of Islands → Grid: DFS from each unvisited `'1'` cell, flood-fill all 4 neighbors, return `true` only at the entry point to count. Graph: count connected components — DFS from each unvisited node, increment counter each time a new DFS starts.
 - [ ] Strongly Connected Components (Kosaraju's) →
 - [ ] Dijkstra's Algorithm →
 - [ ] Bellman-Ford Algorithm →
