@@ -186,7 +186,7 @@
 
 ---
 
-## Graphs — 18 Problems
+## Graphs — 15 Problems
 
 - [x] BFS → Iterative with a queue. Mark visited when enqueuing (not dequeuing) to avoid duplicates. Seed the queue with node 0, then for each dequeued node add unvisited neighbors.
 - [x] DFS → Recursive traversal with a `visited[]` boolean array. Mark visited before recursing to handle cycles. Iterate over `adj.get(curr)` (adjacency list) for each neighbor.
@@ -197,30 +197,36 @@
 - [x] Bipartite Graph Check → BFS/DFS 2-coloring: assign alternating colors to neighbors; if a neighbor already has the same color, not bipartite. Use a `colors[]` array (default `-1`) and iterate over `graph[curr]` (the adjacency list), not all nodes.
 - [x] Clone Graph → DFS with a `Map<Node, Node>` memo: create the clone before recursing into neighbors so cycles terminate. On revisit, return the already-cloned node from the map.
 - [x] Number of Islands → Grid: DFS from each unvisited `'1'` cell, flood-fill all 4 neighbors, return `true` only at the entry point to count. Graph: count connected components — DFS from each unvisited node, increment counter each time a new DFS starts.
-- [ ] Strongly Connected Components (Kosaraju's) →
-- [ ] Dijkstra's Algorithm →
-- [ ] Bellman-Ford Algorithm →
-- [ ] Floyd-Warshall Algorithm →
-- [ ] Prim's Algorithm (MST) →
-- [ ] Kruskal's Algorithm (MST) →
+- [x] Maximum Number of Non-Overlapping Substrings → For each char, compute `[first, last]` interval; expand it by scanning inside and pulling in the full range of any char whose occurrence extends beyond current bounds (invalid if any char's first occurrence is before `left`). Sort valid intervals by end; greedily pick non-overlapping ones (same as N Meetings in One Room).
+- [x] Dijkstra's Algorithm → Min-heap of `{dist, node}`. Lazy deletion: skip a node if already settled (`dist[node] != MAX_VALUE`). On first visit, set `dist[curr] = dist` and enqueue all unvisited neighbors with updated cost. Works only on non-negative weights — negative edges break the greedy settlement assumption.
+- [x] Bellman-Ford Algorithm → Relax all edges V-1 times (shortest path has at most V-1 edges). Skip edges from unreachable nodes (`dist[u] == INF`). One more pass to detect negative cycles — if any edge still relaxes, a negative cycle exists; return `{-1}`. Handles negative weights unlike Dijkstra.
+- [x] Floyd-Warshall Algorithm → Triple loop: for each intermediate node `k`, update `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`. Skip if either leg is INF to avoid overflow. Modifies the matrix in-place; `k` must be the outermost loop. Detects negative cycles: if `dist[i][i] < 0` after the algorithm, a negative cycle exists.
+- [x] Prim's Algorithm (MST) → Min-heap of `{weight, node}`. Start from node 0. Lazy deletion: skip if already in MST (`inMST[u]`). Otherwise mark it, add edge weight to total, enqueue non-MST neighbors. Greedy: always extends the tree via the cheapest crossing edge. O((V+E) log V).
+- [x] Kruskal's Algorithm (MST) → Sort edges by weight. Union-Find with path compression (halving: `parent[x] = parent[parent[x]]`) and union by rank. For each edge, `union(u, v)` — if they're in different components (different roots), merge and add weight. Skip edges that would form a cycle (same root). O(E log E).
 
 ---
 
 ## Dynamic Programming — 15 Problems
 
-- [ ] Maximum Product Subarray →
-- [ ] Longest Increasing Subsequence →
-- [ ] Longest Common Subsequence →
-- [ ] 0-1 Knapsack →
-- [ ] Edit Distance →
-- [ ] Subset Sum →
-- [ ] Rod Cutting →
-- [ ] Matrix Chain Multiplication →
-- [ ] Maximum Sum Path in Matrix →
+- [x] Maximum Product Subarray → Track `currMin` and `currMax` ending at each index — a negative number can flip min to max. Save `prevMin` before updating since `currMax` update needs the old min. Candidate for each: `num` alone, `currMin*num`, `currMax*num`. Update global `res` from `currMax` each step.
+- [x] Longest Increasing Subsequence → Patience sorting: maintain a `tails` list where `tails[i]` is the smallest tail of all IS of length `i+1`. For each number, binary search for the first tail `>= num` and replace it; if none, append. `tails.size()` is the LIS length. `tails` is not the actual LIS — just a length oracle.
+- [x] Longest Common Subsequence → 2D DP space-optimised to two 1D arrays. Match: `curr[j] = prev[j-1] + 1`. Mismatch: `curr[j] = max(prev[j], curr[j-1])` (best of skip-in-s1 or skip-in-s2). Answer is `prev[n]` after all rows. 1-indexed arrays avoid bounds-check helpers.
+- [x] 0-1 Knapsack → `dp[w][i]` = max value using items `0..i` with capacity `w`. If `wt[i] <= w`: max of (include: `dp[w-wt[i]][i-1] + val[i]`, exclude: `dp[w][i-1]`). Else: carry forward `dp[w][i-1]`. `get()` helper returns 0 for negative indices, avoiding a sentinel row/col.
+- [x] Edit Distance → `dp[i][j]` = min ops to convert `word1[0..i]` to `word2[0..j]`. Match: carry `prev[j-1]`. Mismatch: `1 + min(curr[j-1], prev[j], prev[j-1])` — insert, delete, replace respectively. Base: `prev[j] = j` (empty word1, insert j chars); `curr[0] = i` (delete all of word1).
+- [x] Subset Sum → 0/1 knapsack on booleans. `dp[i]` = can we reach sum `i`. Iterate each num; update `dp` right-to-left (`i` down to `num`) to avoid reusing the same element. `dp[i] |= dp[i-num]`. Early exit if `dp[sum]` is true. `dp[0] = true` base.
+- [x] Rod Cutting → Unbounded knapsack: outer loop over piece lengths `i` (1..n), inner loop over rod lengths `j` (i..n) left-to-right (reuse allowed). `dp[j] = max(dp[j], price[i-1] + dp[j-i])`. Same structure as Coin Change II with `price[i-1]` as value and `i` as weight.
+- [x] Super Egg Drop → Invert the problem: `dp[t][e]` = max floors checkable in `t` trials with `e` eggs. Recurrence: `dp[t][e] = dp[t-1][e-1] + 1 + dp[t-1][e]` (egg breaks → check below, egg survives → check above). Increment `t` until `dp[t][k] >= n`. Answer is `t`.
+- [x] Word Break → `dp[i]` = can `s[0..i]` be segmented. For each `end`, scan backwards for a `start` where `dp[start]` is true and `s[start..end]` is in the dictionary. Break early on first match. `dp[0] = true` base.
+- [x] Palindrome Partitioning (DP) → Precompute `dp[i][j]` bottom-up: `s[i]==s[j] && (size<3 || dp[i+1][j-1])`. Backtrack: at `start`, try every `end >= start`; if `dp[start][end]`, recurse from `end+1`. Precomputing avoids repeated O(n) palindrome checks during backtracking.
+- [x] Maximum Profit in Job Scheduling → Sort by start time. `dp[i]` = max profit from jobs `i..n`. For each job: skip = `dp[i+1]`; take = `profit[i] + dp[nextValid]` where `nextValid` is binary-searched as first job with `start >= end[i]`. `dp[0]` is the answer.
+- [x] Coin Change II (Count Ways) → Unbounded knapsack for counts. `dp[i]` = number of ways to make amount `i`. For each coin, iterate `i` from `c` to `amount`: `dp[i] += dp[i-c]`. Outer loop over coins (not amounts) ensures each combination is counted once — avoids permutation duplicates. `dp[0] = 1` base.
+- [x] Matrix Chain Multiplication → Memoised recursion on `[l, r]` (index range in dims array). Split at every `k` in `(l, r)`: cost = `find(l,k) + find(k,r) + arr[l]*arr[k]*arr[r]`. Base case: `l+1 == r` → 0 (single matrix). `arr` stores dimensions so matrix `i` is `arr[i-1] × arr[i]`.
+- [x] Minimum Sum Path in Matrix → Fill in-place bottom-up: seed last row (right-to-left) and last col (bottom-to-top) with running sums. Then for each inner cell, `grid[i][j] += min(grid[i+1][j], grid[i][j+1])`. Answer at `grid[0][0]`. Backtrack the path: from `(0,0)`, always step toward the smaller neighbor (down vs right). Count paths: same structure but `dp[i][j] = dp[i+1][j] + dp[i][j+1]`; seed last row and col with 1.
+- [x] Maximum Sum Increasing Subsequence → LIS variant: `dp[i]` = max sum of increasing subsequence ending at `i`, seeded with `arr[i]`. For each `j < i` where `arr[j] < arr[i]`, update `dp[i] = max(dp[i], dp[j] + arr[i])`. Track global max across all `dp[i]`. O(n²).
 
 ---
 
-## Strings & Trie — 19 Problems
+## Strings & Trie — 17 Problems
 
 ### Strings
 
@@ -239,8 +245,8 @@
 
 ### Trie
 
-- [ ] Implement Trie (Prefix Tree) →
-- [ ] Implement Trie II →
-- [ ] Longest String with All Prefixes →
-- [ ] Number of Distinct Substrings →
-- [ ] Maximum XOR of Two Numbers in an Array →
+- [x] Implement Trie (Prefix Tree) → TrieNode has `children[26]` and a boolean `isEnd`. `insert` walks/creates nodes char by char. `search` walks and checks `isEnd` at terminal; `startsWith` walks and returns true if path exists. All O(word length).
+- [x] Implement Trie II → Extend each TrieNode with `countPrefix` and `countEnd` counters. `insert` increments `countPrefix` at every node, `countEnd` at terminal. `erase` decrements both — no node deletion needed. `countWordsEqualTo` returns terminal `countEnd`; `countWordsStartingWith` returns first-node `countPrefix`.
+- [x] Longest String with All Prefixes → Insert all words into Trie; sort words lexicographically first so a plain `length >` check handles ties. isValidPrefix walks the Trie checking isWord at every node, not just the terminal.
+- [x] Number of Distinct Substrings → Every substring is a prefix of some suffix. Insert all n suffixes into a Trie; each new node created = one unique substring. Answer = total nodes created. O(n²) vs O(n³) HashSet approach.
+- [x] Maximum XOR of Two Numbers in an Array → Binary Trie storing 32-bit representations. For each number, greedily pick the opposite bit at each level while querying — maximises XOR bit by bit. Insert all numbers first, then query each; answer is max over all queries.
